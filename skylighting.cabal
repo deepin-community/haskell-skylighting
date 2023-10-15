@@ -1,5 +1,5 @@
 name:                skylighting
-version:             0.8.5
+version:             0.12.3.1
 synopsis:            syntax highlighting library
 description:         Skylighting is a syntax highlighting library with
                      support for over one hundred languages.  It derives
@@ -51,7 +51,6 @@ library
                        Skylighting.Syntax.Ada
                        Skylighting.Syntax.Agda
                        Skylighting.Syntax.Alert
-                       Skylighting.Syntax.AlertIndent
                        Skylighting.Syntax.Apache
                        Skylighting.Syntax.Asn1
                        Skylighting.Syntax.Asp
@@ -66,6 +65,7 @@ library
                        Skylighting.Syntax.Cmake
                        Skylighting.Syntax.Coffee
                        Skylighting.Syntax.Coldfusion
+                       Skylighting.Syntax.Comments
                        Skylighting.Syntax.Commonlisp
                        Skylighting.Syntax.Cpp
                        Skylighting.Syntax.Cs
@@ -86,12 +86,15 @@ library
                        Skylighting.Syntax.Email
                        Skylighting.Syntax.Erlang
                        Skylighting.Syntax.Fasm
-                       Skylighting.Syntax.Fortran
+                       Skylighting.Syntax.FortranFixed
+                       Skylighting.Syntax.FortranFree
                        Skylighting.Syntax.Fsharp
                        Skylighting.Syntax.Gcc
                        Skylighting.Syntax.Glsl
                        Skylighting.Syntax.Gnuassembler
                        Skylighting.Syntax.Go
+                       Skylighting.Syntax.Graphql
+                       Skylighting.Syntax.Groovy
                        Skylighting.Syntax.Hamlet
                        Skylighting.Syntax.Haskell
                        Skylighting.Syntax.Haxe
@@ -102,8 +105,8 @@ library
                        Skylighting.Syntax.J
                        Skylighting.Syntax.Java
                        Skylighting.Syntax.Javadoc
-                       Skylighting.Syntax.JavascriptReact
                        Skylighting.Syntax.Javascript
+                       Skylighting.Syntax.JavascriptReact
                        Skylighting.Syntax.Json
                        Skylighting.Syntax.Jsp
                        Skylighting.Syntax.Julia
@@ -131,12 +134,15 @@ library
                        Skylighting.Syntax.Monobasic
                        Skylighting.Syntax.Mustache
                        Skylighting.Syntax.Nasm
+                       Skylighting.Syntax.Nim
+                       Skylighting.Syntax.Nix
                        Skylighting.Syntax.Noweb
                        Skylighting.Syntax.Objectivec
                        Skylighting.Syntax.Objectivecpp
                        Skylighting.Syntax.Ocaml
                        Skylighting.Syntax.Octave
                        Skylighting.Syntax.Opencl
+                       Skylighting.Syntax.Orgmode
                        Skylighting.Syntax.Pascal
                        Skylighting.Syntax.Perl
                        Skylighting.Syntax.Php
@@ -151,6 +157,7 @@ library
                        Skylighting.Syntax.Python
                        Skylighting.Syntax.Qml
                        Skylighting.Syntax.R
+                       Skylighting.Syntax.Raku
                        Skylighting.Syntax.Relaxng
                        Skylighting.Syntax.Relaxngcompact
                        Skylighting.Syntax.Rest
@@ -158,19 +165,26 @@ library
                        Skylighting.Syntax.Roff
                        Skylighting.Syntax.Ruby
                        Skylighting.Syntax.Rust
+                       Skylighting.Syntax.Sass
                        Skylighting.Syntax.Scala
                        Skylighting.Syntax.Scheme
                        Skylighting.Syntax.Sci
+                       Skylighting.Syntax.Scss
                        Skylighting.Syntax.Sed
                        Skylighting.Syntax.Sgml
                        Skylighting.Syntax.Sml
+                       Skylighting.Syntax.SpdxComments
+                       Skylighting.Syntax.Sql
                        Skylighting.Syntax.SqlMysql
                        Skylighting.Syntax.SqlPostgresql
-                       Skylighting.Syntax.Sql
+                       Skylighting.Syntax.Stan
                        Skylighting.Syntax.Stata
+                       Skylighting.Syntax.Swift
+                       Skylighting.Syntax.Systemverilog
                        Skylighting.Syntax.Tcl
                        Skylighting.Syntax.Tcsh
                        Skylighting.Syntax.Texinfo
+                       Skylighting.Syntax.Toml
                        Skylighting.Syntax.Typescript
                        Skylighting.Syntax.Verilog
                        Skylighting.Syntax.Vhdl
@@ -181,16 +195,17 @@ library
                        Skylighting.Syntax.Yacc
                        Skylighting.Syntax.Yaml
                        Skylighting.Syntax.Zsh
-  other-extensions:    CPP, Arrows
+  other-extensions:    CPP
   build-depends:       base >= 4.8 && < 5.0,
-                       skylighting-core == 0.8.5,
-                       bytestring,
+                       skylighting-core == 0.12.3.1,
                        containers,
                        binary
   hs-source-dirs:      src
   ghc-prof-options:    -fprof-auto-exported
   default-language:    Haskell2010
   ghc-options:         -Wall
+  if impl(ghc >= 8.10)
+    ghc-options:      -Wunused-packages
 
 Flag executable
   Description:   Whether to build the skylighting program
@@ -198,11 +213,9 @@ Flag executable
 
 executable skylighting
   build-depends:       base >= 4.8 && < 5.0,
-                       filepath,
                        text,
                        pretty-show,
                        containers,
-                       directory,
                        bytestring,
                        blaze-html >= 0.5,
                        skylighting
@@ -210,7 +223,9 @@ executable skylighting
   main-is:             main.hs
   default-language:    Haskell2010
   other-extensions:    CPP
-  ghc-options:         -Wall
+  ghc-options:         -Wall -rtsopts
+  if impl(ghc >= 8.10)
+    ghc-options:      -Wunused-packages
   if flag(executable)
     buildable:         True
   else
