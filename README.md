@@ -69,17 +69,20 @@ package.
 
 Using cabal:
 
-    cd skylighting-core
-    cabal install -fexecutable
+    # First, build skylighting-extract
+    cabal build -fexecutable skylighting-core
+    # This will print the path of the built executable.
+    # Replace $EXE with this path in the following steps
+    # Now, generate the syntax files
     cd ../skylighting
-    skylighting-extract ../skylighting-core/xml/*.xml
+    $EXE ../skylighting-core/xml
     cabal install -fexecutable
 
 Using stack:
 
-    stack install --flag skylighting-core:executable skylighting-core
+    stack build --flag skylighting-core:executable skylighting-core
     cd skylighting
-    skylighting-extract ../skylighting-core/xml/*.xml
+    stack exec skylighting-extract -- ../skylighting-core/xml
     cd ..
     stack install --flag skylighting:executable
 
@@ -105,6 +108,23 @@ prefer this approach, you can use the `skylighting-core` package
 directly which provides the XML files without the generated code
 produced by the bootstrap process described above.
 
+If the syntax definition you are adding is not already in the
+[KDE repository], please submit it upstream so it can be
+included there.  You can do that here, providing the file (or
+changes) and a test:
+<https://invent.kde.org/frameworks/syntax-highlighting/-/merge_requests>.
+Here is a sample merge request:
+<https://invent.kde.org/frameworks/syntax-highlighting/-/merge_requests/20/diffs>.
+If creating a proper merge request is too much work, at least
+submit an issue to
+<https://invent.kde.org/frameworks/syntax-highlighting/-/issues>
+alerting the KDE developers of the availability of a new or
+changed syntax definition; they can then decide whether to
+integrate it.
+
+We normally pull changes in syntax definitions from upstream
+before each release.
+
 License
 -------
 
@@ -114,13 +134,17 @@ GPL-licensed. However, the `skylighting-core` package, which provides
 the core types and functions of this project is licensed under the BSD3
 license and bundles the GPL-licensed XML files separately.
 
+The KDE project now recommends that new syntax highlighting
+files be MIT licensed.
+
 References
 ----------
 
 Kate syntax highlighting documentation:
-<https://docs.kde.org/stable5/en/applications/katepart/highlight.html>
+<https://docs.kde.org/stable5/en/kate/katepart/highlight.html>
 
-Kate highlighting definitions:
-<https://github.com/KDE/syntax-highlighting/tree/master/data/syntax>
+Kate highlighting definitions: [KDE repository]
+
+[KDE repository]: <https://github.com/KDE/syntax-highlighting/tree/master/data/syntax>
 
 [highlighting-kate]: https://github.com/jgm/highlighting-kate
